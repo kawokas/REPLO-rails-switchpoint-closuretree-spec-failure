@@ -1,0 +1,26 @@
+language: ruby
+rvm:
+  - 2.2.5
+  - 2.3.1
+  - jruby-9.1.0.0
+  - jruby-head
+  - ruby-head
+gemfile:
+  - gemfiles/rails_3.2.gemfile
+  - gemfiles/rails_4.0.gemfile
+  - gemfiles/rails_4.1.gemfile
+  - gemfiles/rails_4.2.gemfile
+  - gemfiles/rails_5.0.gemfile
+  - gemfiles/rails_edge.gemfile
+sudo: false
+after_script:
+  - bundle exec rake benchmark
+matrix:
+  allow_failures:
+    - rvm: ruby-head
+    - rvm: jruby-head
+    - gemfile: gemfiles/rails_edge.gemfile
+    # Wait for activerecord-jdbcsqlite3-adapter's support
+    # https://github.com/jruby/activerecord-jdbc-adapter/labels/rails-5.x
+    - rvm: jruby-9.1.0.0
+      gemfile: gemfiles/rails_5.0.gemfile
